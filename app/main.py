@@ -8,25 +8,28 @@ class Person:
 
 
 def create_person_list(people: list[dict]) -> list:
+    Person.people.clear()
+
     person_list = []
     for person in people:
-        personality = Person(person["name"], person["age"])
+        person_obj = Person(person["name"], person["age"])
 
         if "wife" in person and person["wife"] is not None:
-            personality._wife_name = person["wife"]
+            person_obj._wife_name = person["wife"]
         if "husband" in person and person["husband"] is not None:
-            personality._husband_name = person["husband"]
-        person_list.append(personality)
+            person_obj._husband_name = person["husband"]
+
+        person_list.append(person_obj)
 
     for person in person_list:
         if hasattr(person, "_wife_name"):
             wife_obj = Person.people.get(person._wife_name)
-            if wife_obj is not None:
+            if wife_obj:
                 person.wife = wife_obj
             del person._wife_name
         if hasattr(person, "_husband_name"):
             husband_obj = Person.people.get(person._husband_name)
-            if husband_obj is not None:
+            if husband_obj:
                 person.husband = husband_obj
             del person._husband_name
 
